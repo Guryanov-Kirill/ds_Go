@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package movie;
+
+option go_package = "moviesvc/pb";
+
+service MovieService {
+  rpc LoadMovies(LoadMoviesRequest) returns (LoadMoviesResponse);
+  rpc GetLastMovie(GetLastMovieRequest) returns (Movie);
+}
+
+message Movie {
+  int32 id = 1;
+  string title = 2;
+  string img = 3;
+}
+
+message LoadMoviesRequest {
+  int32 from = 1;
+  int32 to = 2;
+}
+
+// фильм, который не удалось загрузить
+message LoadError {
+  int32 id = 1;
+  string message = 2;
+}
+
+message LoadMoviesResponse {
+  repeated Movie movies = 1;
+  repeated LoadError errors = 2;
+}
+
+message GetLastMovieRequest {}
