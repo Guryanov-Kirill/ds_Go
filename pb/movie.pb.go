@@ -25,7 +25,8 @@ type Movie struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
-	Img           string                 `protobuf:"bytes,3,opt,name=img,proto3" json:"img,omitempty"`
+	Year          int32                  `protobuf:"varint,3,opt,name=year,proto3" json:"year,omitempty"`
+	Director      string                 `protobuf:"bytes,4,opt,name=director,proto3" json:"director,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -74,9 +75,16 @@ func (x *Movie) GetTitle() string {
 	return ""
 }
 
-func (x *Movie) GetImg() string {
+func (x *Movie) GetYear() int32 {
 	if x != nil {
-		return x.Img
+		return x.Year
+	}
+	return 0
+}
+
+func (x *Movie) GetDirector() string {
+	if x != nil {
+		return x.Director
 	}
 	return ""
 }
@@ -278,11 +286,12 @@ var File_movie_proto protoreflect.FileDescriptor
 
 const file_movie_proto_rawDesc = "" +
 	"\n" +
-	"\vmovie.proto\x12\x05movie\"?\n" +
+	"\vmovie.proto\x12\x05movie\"]\n" +
 	"\x05Movie\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x14\n" +
-	"\x05title\x18\x02 \x01(\tR\x05title\x12\x10\n" +
-	"\x03img\x18\x03 \x01(\tR\x03img\"7\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12\x12\n" +
+	"\x04year\x18\x03 \x01(\x05R\x04year\x12\x1a\n" +
+	"\bdirector\x18\x04 \x01(\tR\bdirector\"7\n" +
 	"\x11LoadMoviesRequest\x12\x12\n" +
 	"\x04from\x18\x01 \x01(\x05R\x04from\x12\x0e\n" +
 	"\x02to\x18\x02 \x01(\x05R\x02to\"5\n" +

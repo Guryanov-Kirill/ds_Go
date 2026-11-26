@@ -12,7 +12,8 @@ service MovieService {
 message Movie {
   int32 id = 1;
   string title = 2;
-  string img = 3;
+  int32 year = 3;
+  string director = 4;
 }
 
 message LoadMoviesRequest {

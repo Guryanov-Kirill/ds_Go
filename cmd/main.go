@@ -7,29 +7,28 @@ import (
 
 	"google.golang.org/grpc"
 
-	"moviesvc/config"
-	"moviesvc/grpcapi"
-	"moviesvc/httpapi"
+	"moviesvc/internal/adapter"
+	"moviesvc/internal/config"
+	"moviesvc/internal/handler"
+	"moviesvc/internal/usecase"
 	"moviesvc/pb"
-	"moviesvc/service"
-	"moviesvc/stand"
 )
 
 func main() {
 	cfg := config.Load()
-	svc := service.New(stand.New(cfg.MovieBaseURL))
-
+	stand := adapter.NewStandClient(cfg.MovieBaseURL)
+	uc := usecase.New(stand)
 	// gRPC сервер в отдельной горутине
 	lis, err := net.Listen("tcp", cfg.GRPCAddr)
 	if err != nil {
 		log.Fatal(err)
 	}
 	grpcServer := grpc.NewServer()
-	pb.RegisterMovieServiceServer(grpcServer, grpcapi.New(svc))
+	pb.RegisterMovieServiceServer(grpcServer, handler.NewGRPC(uc))
 	go func() {
 		log.Fatal(grpcServer.Serve(lis))
 	}()
 
 	// HTTP сервер
-	log.Fatal(http.ListenAndServe(cfg.HTTPAddr, httpapi.New(svc)))
+	log.Fatal(http.ListenAndServe(cfg.HTTPAddr, handler.NewHTTP(uc)))
 }
